@@ -66,6 +66,7 @@ def create_hosted_cluster(cluster_name, project_id, debug=False):
     # and pass the configuration
     capella_api_response = cappella_api.create_cluster(True, cluster_configuration)
 
+
     # Check response code , 202 is success
     if capella_api_response.status_code == 202:
         #return "" + cappella_api.API_BASE_URL + \
@@ -74,7 +75,8 @@ def create_hosted_cluster(cluster_name, project_id, debug=False):
         # return the cluster id
         return capella_api_response.headers['Location'].split('/v3/clusters/')[1]
     else:
-        return "" + capella_api_response.json()["message"]
+        print(capella_api_response.json()["message"])
+        return None
 
 
 if __name__ == '__main__':

@@ -71,6 +71,8 @@ if __name__ == '__main__':
 
     # create the capella cluster using the name from the args, return a UUID.
     cluster_uuid = create_hosted_cluster(args.cluster_name, project_id)
+    if not cluster_uuid:
+        quit()
 
     # get the hosted cluster status
     cluster_healthy = False
