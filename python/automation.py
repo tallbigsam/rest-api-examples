@@ -8,12 +8,10 @@ from time import time
 from time import sleep
 from requests import get
 
-from get_project_id import get_project_id
+from getProjectId import get_project_id
 from createHostedClusterInProject import create_hosted_cluster
 from checkHostedClusterIsHealthy import get_cluster_health_status
-from getHostedClusterInfoFromUUID import get_hosted_cluster_info_from_uuid
-from getClusterIdFromName import get_cluster_id_from_name
-from createHostedClusterUser import request_user_creation
+
 
 # Owned
 from capellaAPI.CapellaAPICommon import MyParser
