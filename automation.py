@@ -43,13 +43,36 @@ if __name__ == '__main__':
                            action="store_true",
                            help="Turn on logging at debug level")
 
+    my_parser.add_argument('-pn', '--projectName',
+                           dest="project_name",
+                           action='store',
+                           metavar="",
+                           required=True,
+                           type=str,
+                           help='Name of the Project to create the cluster in (must be created in Capella Tenant)')
+
+    my_parser.add_argument('-cn', '--clusterName',
+                           dest="cluster_name",
+                           action='store',
+                           metavar="",
+                           type=str,
+                           required=True,
+                           help='Name for the Cluster')
+
     args = my_parser.parse_args()
 
-    project_name = "sam-demo"
-    cluster_name = "otto-cluster"
-    project_id = get_project_id(args, project_name)
+    # use these variables if you'd rather statically define names
+    #project_name = "sam-demo"
+    #cluster_name = "otto-cluster"
 
-    cluster_uuid = create_hosted_cluster(cluster_name, project_id)
+    # get the project ID from the Capella API from the args
+    project_id = get_project_id(args, args.project_name)
+    if not project_id:
+        print(f"Project Name: {args.project_name} not found. Please create it in the Capella GUI.")
+        quit()
+
+    # create the capella cluster using the name from the args, return a UUID.
+    cluster_uuid = create_hosted_cluster(args.cluster_name, project_id)
 
     # get the hosted cluster status
     cluster_healthy = False
@@ -61,33 +84,4 @@ if __name__ == '__main__':
             print("Timed out checking cluster health")
             break
 
-    # when it's ready, get the srv record to connect to
-    #cluster_uuid = get_cluster_id_from_name(cluster_name)
-    
-    #cluster_uuid = get_cluster_uuid("travel-sample", project_id)
-    #server_list = get_servers(cluster_uuid)
-
-    # create the bucket on the cluster
-
-    # create the cluster user
-    cluster_info = get_hosted_cluster_info_from_uuid(cluster_uuid)
-    print(cluster_info)
-
-    cluster_user_struct = {
-        "password": "Password123!",
-        "username": "TheDude",
-        "buckets": []
-    }
-
-    password = "Password123!"
-    username = "TheDude"
-    buckets_and_scope = "travel-sample:*:rw"
-    
-    # create a database user to allow the SDK to connect
-    request_user_creation(cluster_uuid, username, password, buckets_and_scope)
-
-    # create an IP whitelist for the cluster
-    my_ip = get('https://api.ipify.org').content.decode('utf8')
-
-    # when we have the servers, run the test! 
-    # cluster is ready, get the srv
+    print(f"Check the Capella API, now created cluster {args.cluster_name}")
