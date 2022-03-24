@@ -32,7 +32,7 @@ if __name__ == '__main__':
     # Process command line args
     # Create the parser
 
-    my_parser = MyParser(description='List projects defined in Couchbase Capella')
+    my_parser = MyParser(description='Create a named cluster in Couchbase Capella within a specified Project')
     my_parser.ExampleCmdline = "With debug on -d \nWith debug off "
 
     # Add the arguments
